@@ -1,4 +1,4 @@
-package app.services;
+package app.dao;
 
 import app.domain.Client;
 import app.domain.Exchanger;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class AccountAuthenticationService {
+public class AccountAuthenticationDao {
 
     @Autowired
     private SessionFactory sessionFactory;

@@ -1,4 +1,4 @@
-package app.services;
+package app.dao;
 
 import app.domain.Client;
 import app.domain.CompletedTransaction;
@@ -10,9 +10,10 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-@Component
-public class CompletedTransactionService {
+@Repository
+public class CompletedTransactionDao {
 
     @Autowired
     private SessionFactory sessionFactory;

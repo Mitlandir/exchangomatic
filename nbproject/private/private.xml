@@ -2,6 +2,19 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/Milan/Desktop/Projects/exchangomatic/src/java/app/domain/Exchanger.java</file>
+            <file>file:/C:/Users/Milan/Desktop/Projects/exchangomatic/src/java/app/domain/TransactionRequest.java</file>
+            <file>file:/C:/Users/Milan/Desktop/Projects/exchangomatic/src/java/app/domain/CompletedTransaction.java</file>
+            <file>file:/C:/Users/Milan/Desktop/Projects/exchangomatic/src/java/app/dao/TransactionOfferDao.java</file>
+            <file>file:/C:/Users/Milan/Desktop/Projects/exchangomatic/src/java/app/controllers/MainController.java</file>
+            <file>file:/C:/Users/Milan/Desktop/Projects/exchangomatic/src/java/app/dao/CompletedTransactionDao.java</file>
+            <file>file:/C:/Users/Milan/Desktop/Projects/exchangomatic/src/java/app/domain/TransactionOffer.java</file>
+            <file>file:/C:/Users/Milan/Desktop/Projects/exchangomatic/src/java/app/dao/TransactionRequestDao.java</file>
+            <file>file:/C:/Users/Milan/Desktop/Projects/exchangomatic/src/java/learninggit/Milan.java</file>
+            <file>file:/C:/Users/Milan/Desktop/Projects/exchangomatic/src/java/app/dao/AccountAuthenticationDao.java</file>
+            <file>file:/C:/Users/Milan/Desktop/Projects/exchangomatic/web/WEB-INF/jsp/exchangerdashboard.jsp</file>
+            <file>file:/C:/Users/Milan/Desktop/Projects/exchangomatic/src/java/app/dao/LoginDao.java</file>
+        </group>
     </open-files>
 </project-private>

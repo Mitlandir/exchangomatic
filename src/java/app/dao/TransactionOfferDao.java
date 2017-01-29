@@ -1,4 +1,4 @@
-package app.services;
+package app.dao;
 
 import app.domain.Client;
 import app.domain.TransactionOffer;
@@ -11,9 +11,10 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-@Component
-public class TransactionOfferService {
+@Repository
+public class TransactionOfferDao {
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -22,7 +23,7 @@ public class TransactionOfferService {
     private HttpServletRequest pageContext;
 
     @Autowired
-    private TransactionRequestService transactionRequestService;
+    private TransactionRequestDao transactionRequestDao;
 
     public boolean transactionOfferAlreadySent(TransactionOffer offer) {
         //checks if this exchanger has already sent an offer to the same client for the same transaction request

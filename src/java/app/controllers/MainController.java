@@ -1,15 +1,15 @@
 package app.controllers;
 
-import app.services.LoginService;
-import app.services.TransactionRequestService;
+import app.dao.LoginDao;
+import app.dao.TransactionRequestDao;
 import app.domain.Client;
 import app.domain.CompletedTransaction;
 import app.domain.Exchanger;
 import app.domain.TransactionOffer;
 import app.domain.TransactionRequest;
-import app.services.AccountAuthenticationService;
-import app.services.CompletedTransactionService;
-import app.services.TransactionOfferService;
+import app.dao.AccountAuthenticationDao;
+import app.dao.CompletedTransactionDao;
+import app.dao.TransactionOfferDao;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class MainController {
 
-    //TODO: move login-oriented functionalities into LoginService (or something along those lines)
+    //TODO: move login-oriented functionalities into LoginDao (or something along those lines)
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -39,19 +39,19 @@ public class MainController {
     private HttpServletRequest pageContext;
 
     @Autowired
-    private TransactionRequestService transactionRequestService;
+    private TransactionRequestDao transactionRequestDao;
 
     @Autowired
-    private LoginService loginService;
+    private LoginDao loginDao;
 
     @Autowired
-    private TransactionOfferService transactionOfferService;
+    private TransactionOfferDao transactionOfferDao;
 
     @Autowired
-    private CompletedTransactionService completedTransactionService;
+    private CompletedTransactionDao completedTransactionDao;
 
     @Autowired
-    private AccountAuthenticationService accountAuthenticationService;
+    private AccountAuthenticationDao accountAuthenticationDao;
 
     @RequestMapping(value = "/client")
     public String getClientDashboard() {
@@ -79,7 +79,7 @@ public class MainController {
 
     @RequestMapping(value = "/clientlogin", method = RequestMethod.POST)
     public String postClientLogin(Client client, HttpServletResponse response) throws IOException {
-        List<Client> list = loginService.lookupClient(client);
+        List<Client> list = loginDao.lookupClient(client);
         if (list == null) {
             Session ses = sessionFactory.openSession();
             Transaction tx = ses.beginTransaction();
@@ -103,7 +103,7 @@ public class MainController {
 
     @RequestMapping(value = "/exchangerlogin", method = RequestMethod.POST)
     public String postExchangerLogin(Exchanger exchanger) {
-        List<Exchanger> list = loginService.lookupExchanger(exchanger);
+        List<Exchanger> list = loginDao.lookupExchanger(exchanger);
         if (list == null) {
             Session ses = sessionFactory.openSession();
             Transaction tx = ses.beginTransaction();
@@ -128,11 +128,11 @@ public class MainController {
     @RequestMapping(value = "/saverequest", method = RequestMethod.POST)
     @ResponseBody
     public String saveTransactionRequest(@RequestBody TransactionRequest req) {
-        if (!accountAuthenticationService.authenticateClient(req.getClient())) {
+        if (!accountAuthenticationDao.authenticateClient(req.getClient())) {
             return "Error: Client authentication failed.";
         }
         //will need to hash passwords, ID's and usernames
-        transactionRequestService.saveTransactionRequest(req);
+        transactionRequestDao.saveTransactionRequest(req);
         return "Success";
         //change void to String and have it return a status msg
     }
@@ -140,62 +140,62 @@ public class MainController {
     @RequestMapping(value = "/fetchrequest/{id}")//NOTE: hash the ID, OR request for an entire object to be sent instead
     @ResponseBody
     public String fetchTransactionRequest(@PathVariable int id, @RequestBody Exchanger exchanger) {
-        if (!accountAuthenticationService.authenticateExchanger(exchanger)) {
+        if (!accountAuthenticationDao.authenticateExchanger(exchanger)) {
             return "Error: Exchanger authentication failed.";
         }
-        return transactionRequestService.fetchTransactionRequest(exchanger, id);
+        return transactionRequestDao.fetchTransactionRequest(exchanger, id);
     }
 
     @RequestMapping(value = "/fetchrequests", method = RequestMethod.POST)
     @ResponseBody
     //will fetch all requests, however, the ones that this Exchanger has already sent an offer to will be marked as alreadyOffered (boolean property)
     public String fetchTransactionRequests(@RequestBody Exchanger exchanger) {
-        if (!accountAuthenticationService.authenticateExchanger(exchanger)) {
+        if (!accountAuthenticationDao.authenticateExchanger(exchanger)) {
             return "Error: Exchanger authentication failed.";
         }
-        return transactionRequestService.fetchTransactionRequests(exchanger);
+        return transactionRequestDao.fetchTransactionRequests(exchanger);
     }
 
     @RequestMapping(value = "/fetchoffer/{id}", method = RequestMethod.POST)
     @ResponseBody
     public String fetchTransactionOffer(@PathVariable int id, @RequestBody Client client) {
-        if (!accountAuthenticationService.authenticateClient(client)) {
+        if (!accountAuthenticationDao.authenticateClient(client)) {
             return "Error: Client authentication failed.";
         }
-        return transactionOfferService.fetchTransactionOffer(client, id);
+        return transactionOfferDao.fetchTransactionOffer(client, id);
     }
 
     @RequestMapping(value = "/fetchoffers", method = RequestMethod.POST)
     @ResponseBody
     public String fetchTransactionOffers(@RequestBody Client client) {
-        if (!accountAuthenticationService.authenticateClient(client)) {
+        if (!accountAuthenticationDao.authenticateClient(client)) {
             return "Error: Client authentication failed.";
         }
-        return transactionOfferService.fetchTransactionOffersByClient(client);
+        return transactionOfferDao.fetchTransactionOffersByClient(client);
     }
 
     @RequestMapping(value = "/removetransactionrequest/{id}")
     @ResponseBody
     public void deleteTransactionRequest(@PathVariable TransactionRequest request) {
         //IMPORTANT: this end-point exists for demonstration purposes only; below method(s) will be called internally in the production version
-        transactionRequestService.deleteTransactionRequest(request);
+        transactionRequestDao.deleteTransactionRequest(request);
     }
 
     @RequestMapping(value = "/savetransactionoffer", method = RequestMethod.POST)
     @ResponseBody
     public String saveTransactionOffer(@RequestBody TransactionOffer offer) {
-        if (!accountAuthenticationService.authenticateClient(offer.getClient())) {
+        if (!accountAuthenticationDao.authenticateClient(offer.getClient())) {
             return "Error: Client authentication failed.";
         }
 
-        if (!accountAuthenticationService.authenticateExchanger(offer.getExchanger())) {
+        if (!accountAuthenticationDao.authenticateExchanger(offer.getExchanger())) {
             return "Error: Exchanger authentication failed.";
         }
 
-        if (!transactionRequestService.authenticateTransactionRequest(offer.getTransactionRequest())) {
+        if (!transactionRequestDao.authenticateTransactionRequest(offer.getTransactionRequest())) {
             return "Error: transaction request no longer exists.";
         }
-        transactionOfferService.saveTransactionOffer(offer);
+        transactionOfferDao.saveTransactionOffer(offer);
         return "Success";
     }
 
@@ -203,23 +203,23 @@ public class MainController {
     @ResponseBody
     public void deleteTransactionOffer(@RequestBody TransactionOffer offer) {
         //will probably never be accessed by end-users; here just for testing
-        transactionOfferService.deleteTransactionOffer(offer);
+        transactionOfferDao.deleteTransactionOffer(offer);
     }
 
     @RequestMapping(value = "/savecompletedtransaction", method = RequestMethod.POST)
     @ResponseBody
     public String saveCompletedTransaction(@RequestBody CompletedTransaction trans) {
-        if (!accountAuthenticationService.authenticateClient(trans.getClient())) {
+        if (!accountAuthenticationDao.authenticateClient(trans.getClient())) {
             System.out.println("Error: Client authentication failed.");
             return "Error: Client authentication failed.";
         }
-        if (!transactionRequestService.transactionRequestBelongsToClient(trans.getClient(), trans.getClient().getTransactionRequest())) {
+        if (!transactionRequestDao.transactionRequestBelongsToClient(trans.getClient(), trans.getClient().getTransactionRequest())) {
             System.out.println("Error: transaction request does not belong to this client");
             return "Error: transaction request does not belong to this client";
         }
-        completedTransactionService.saveCompletedTransaction(trans); //WARNING: it might be a bad idea to first save the transaction and then delete its prerequisites, however, this was the only way. Right now, a completedTransaction is saved based on the offer, so if the offer gets deleted first, the transaction cannot be saved
-        transactionOfferService.deleteTransactionOffersByClient(trans.getClient());
-        transactionRequestService.deleteTransactionRequest(trans.getClient().getTransactionRequest());
+        completedTransactionDao.saveCompletedTransaction(trans); //WARNING: it might be a bad idea to first save the transaction and then delete its prerequisites, however, this was the only way. Right now, a completedTransaction is saved based on the offer, so if the offer gets deleted first, the transaction cannot be saved
+        transactionOfferDao.deleteTransactionOffersByClient(trans.getClient());
+        transactionRequestDao.deleteTransactionRequest(trans.getClient().getTransactionRequest());
         return "Success";
     }
 
