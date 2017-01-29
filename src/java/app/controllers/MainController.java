@@ -148,6 +148,7 @@ public class MainController {
 
     @RequestMapping(value = "/fetchrequests", method = RequestMethod.POST)
     @ResponseBody
+    //will fetch all requests, however, the ones that this Exchanger has already sent an offer to will be marked as alreadyOffered (boolean property)
     public String fetchTransactionRequests(@RequestBody Exchanger exchanger) {
         if (!accountAuthenticationService.authenticateExchanger(exchanger)) {
             return "Error: Exchanger authentication failed.";

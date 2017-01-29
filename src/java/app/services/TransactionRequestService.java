@@ -117,18 +117,18 @@ public class TransactionRequestService {
         for (TransactionOffer offer : offers) {
                 for (TransactionRequest request : requests) {
                     if (offer.getTransactionRequest().getId() == request.getId()) {
-                        requestsToRemove.add(request);
+                        request.setAlreadyOffered(true);
                     }
                 }
         }
         
-        requests.removeAll(requestsToRemove);
+        //requests.removeAll(requestsToRemove); -- DEPRECATED; not purging "already offered" requests anymore; marking them as "alreadyOffered" instead
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("[");
         for (int i = 0; i < requests.size(); i++) { //avoiding for-each to ensure I can choose NOT to append a comma after the last JSON object (it would actually work fine even with the comma, but better safe than sorry!)
             stringBuilder.append(requests.get(i).JSONify());
-            //get rid of string concatenation (for optimization purposes)
+            //TO-DO (milan): get rid of string concatenation (for optimization purposes)
             if (i != (requests.size() - 1)) {
                 stringBuilder.append(",");
             }

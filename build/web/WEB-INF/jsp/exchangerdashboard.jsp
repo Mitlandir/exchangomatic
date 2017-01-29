@@ -57,6 +57,10 @@
                     $("#requestsDiv").append(" - client email: " + transactionRequests[i].client.email);
                     $("#requestsDiv").append(" - amount: " + transactionRequests[i].amount);
                     $("#requestsDiv").append(" - rate: " + transactionRequests[i].rate);
+                    $("#requestsDiv").append(" - already offered: " + transactionRequests[i].alreadyOffered);
+                    //@MARKO (by milan): the alreadyOffered property (true/false) tells us whether this particular exchanger has already sent an offer to this request
+                    //you may want to make such requests "grayed out", or you can just choose to make them invisible
+                    //example: every X seconds when Exchanger's dashboard refreshes, it will show all transaction requests that they can send offers to; the array will also contain the requests that the Exchanger has already sent an offer to, so you can decide what you want to do with those (maybe give them another color like Dejan suggested)
                     $("#requestsDiv").append("<br>");  
                 }
             }
