@@ -7,8 +7,8 @@ package learninggit;
 
 /**
  *
- * @author Milan
+ * @author David
  */
-public class NewestClass {
-    //commenting from davids pc
+public class David {
+    
 }
