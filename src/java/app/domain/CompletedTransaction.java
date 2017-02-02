@@ -28,7 +28,14 @@ public class CompletedTransaction implements Serializable {
     }
 
     public String JSONify() {
-        return "{'id':" + id + ",'amount':" + amount + ",'rate':" + rate + "}";
+        StringBuilder sb = new StringBuilder("{'id':");
+        sb.append(id);
+        sb.append(",'amount':");
+        sb.append(amount);
+        sb.append(",'rate':");
+        sb.append(rate);
+        sb.append("}");
+        return sb.toString();
     }
 
     public int getId() {

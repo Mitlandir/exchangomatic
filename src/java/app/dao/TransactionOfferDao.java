@@ -42,7 +42,13 @@ public class TransactionOfferDao {
 
     public void saveTransactionOffer(TransactionOffer offer) {
         if (transactionOfferAlreadySent(offer)) {
-            System.out.println("Error! Exchanger " + offer.getExchanger().getName() + " has already sent an offer to Client " + offer.getClient().getEmail() + " for transaction request " + offer.getTransactionRequest().getId());
+            StringBuilder sb = new StringBuilder("Error! Exchanger ");
+            sb.append(offer.getExchanger().getName());
+            sb.append(" has already sent an offer to Client ");
+            sb.append(offer.getClient().getEmail());
+            sb.append(" for transaction request ");
+            sb.append(offer.getTransactionRequest().getId());          
+            System.out.println(sb.toString());
             return;
         }
 
@@ -97,8 +103,12 @@ public class TransactionOfferDao {
 
     public String fetchTransactionOffer(Client client, int id) {
         if (transactionOfferMismatch(client, id)) {
-            System.out.println("Error! Transaction Offer " + id + " does not belong to client " + client.getEmail());
-            return "ERROR: transaction does not belong to this client";
+            StringBuilder sb = new StringBuilder("Error! Transaction Offer ");
+            sb.append(id);
+            sb.append(" does not belong to client ");
+            sb.append(client.getEmail());
+            System.out.println(sb.toString());
+            return sb.toString();
         }
         Session ses = sessionFactory.openSession();
         Transaction tx = ses.beginTransaction();
@@ -120,7 +130,6 @@ public class TransactionOfferDao {
         stringBuilder.append("[");
         for (int i = 0; i < transactionOffers.size(); i++) { //avoiding for-each to ensure I can choose NOT to append a comma after the last JSON object (it would actually work fine even with the comma, but better safe than sorry!)
             stringBuilder.append(transactionOffers.get(i).JSONify());
-            //get rid of string concatenation (for optimization purposes)
             if (i != (transactionOffers.size() - 1)) {
                 stringBuilder.append(",");
             }

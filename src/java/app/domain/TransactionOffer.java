@@ -29,7 +29,20 @@ public class TransactionOffer implements Serializable {
     }
 
     public String JSONify() {
-        return "{'id':" + id + ",'amount':" + amount + ",'rate':" + rate + ",'exchanger':" + exchanger.JSONify() + ",'client':" + client.JSONify() +  ",'transactionRequest':" + transactionRequest.JSONifyAbbreviated() + "}";
+        StringBuilder sb = new StringBuilder("{'id':");
+        sb.append(id);
+        sb.append(",'amount':");
+        sb.append(amount);
+        sb.append(",'rate':");
+        sb.append(rate);
+        sb.append(",'exchanger':");
+        sb.append(exchanger.JSONify());
+        sb.append(",'client':");
+        sb.append(client.JSONify());
+        sb.append(",'transactionRequest':");
+        sb.append(transactionRequest.JSONifyAbbreviated());
+        sb.append("}");
+        return sb.toString();
     }
 
     /**

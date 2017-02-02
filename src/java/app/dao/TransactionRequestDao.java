@@ -97,8 +97,13 @@ public class TransactionRequestDao {
         ses.close();
         
         if(transactionRequests.isEmpty()){
-            System.out.println("Error! Transaction request " + id + " does not belong to exchanger " + exchanger.getName());
-            return "Error! Transaction request " + id + " does not belong to exchanger " + exchanger.getName();
+            StringBuilder sb = new StringBuilder("Error! Transaction request ");
+            sb.append(id);
+            sb.append(" does not belong to exchanger ");
+            sb.append(exchanger.getName());
+            
+            System.out.println(sb.toString());
+            return sb.toString();
         }
 
         //change to StringBuilder for optimization purposes
@@ -129,7 +134,6 @@ public class TransactionRequestDao {
         stringBuilder.append("[");
         for (int i = 0; i < requests.size(); i++) { //avoiding for-each to ensure I can choose NOT to append a comma after the last JSON object (it would actually work fine even with the comma, but better safe than sorry!)
             stringBuilder.append(requests.get(i).JSONify());
-            //TO-DO (milan): get rid of string concatenation (for optimization purposes)
             if (i != (requests.size() - 1)) {
                 stringBuilder.append(",");
             }

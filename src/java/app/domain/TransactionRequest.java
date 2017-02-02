@@ -33,11 +33,31 @@ public class TransactionRequest implements Serializable {
     }
 
     public String JSONify() {
-        return "{'id':" + id + ",'amount':" + amount + ",'rate':" + rate + ",'client':" + client.JSONify() + ",'alreadyOffered':" + alreadyOffered + "}";
+        StringBuilder sb = new StringBuilder("{'id':");
+        sb.append(id);
+        sb.append(",'amount':");
+        sb.append(amount);
+        sb.append(",'rate':");
+        sb.append(rate);
+        sb.append(",'client':");
+        sb.append(client.JSONify());
+        sb.append(",'alreadyOffered':");
+        sb.append(alreadyOffered);
+        sb.append("}");
+        return sb.toString();
     }
 
     public String JSONifyAbbreviated() {
-        return "{'id':" + id + ",'amount':" + amount + ",'rate':" + rate + ",'alreadyOffered':"+ alreadyOffered + "}";
+        StringBuilder sb = new StringBuilder("{'id':");
+        sb.append(id);
+        sb.append(",'amount':");
+        sb.append(amount);
+        sb.append(",'rate':");
+        sb.append(rate);
+        sb.append(",'alreadyOffered':");
+        sb.append(alreadyOffered);
+        sb.append("}");
+        return sb.toString();
     }
 
     public int getId() {

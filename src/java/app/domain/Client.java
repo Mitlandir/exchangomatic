@@ -31,7 +31,17 @@ public class Client implements Serializable{
 
     public String JSONify(){//have to be careful with this one; can't concat transactionRequest's JSONify method to this as well, else it will enter an endless loop of concatenation
         //this is all a work-around until we get Jackson up and running
-        return "{'id':" + id + ",'email':'" + email + "','password':'" + password + "','transactionRequest':" + transactionRequest.JSONifyAbbreviated() + "}";
+        StringBuilder sb = new StringBuilder("{'id':");
+        sb.append(id);
+        sb.append(",'email':'");
+        sb.append(email);
+        sb.append("','password':'");
+        sb.append(password);
+        sb.append("','transactionRequest':");
+        sb.append(transactionRequest.JSONifyAbbreviated());
+        sb.append("}");
+        
+        return sb.toString();
     }
 
     

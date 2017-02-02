@@ -27,7 +27,14 @@ public class Exchanger implements Serializable {
     }
 
     public String JSONify() {
-        return "{'id':" + id + ",'name':'" + name + "','password':'" + password + "'}";
+        StringBuilder sb = new StringBuilder("{'id':");
+        sb.append(id);
+        sb.append(",'name':'");
+        sb.append(name);
+        sb.append("','password':'");
+        sb.append(password);
+        sb.append("'}");
+        return sb.toString();
     }
 
     public int getId() {
